@@ -5,7 +5,7 @@ import time
 program = r"""
 BPF_HASH(counter_table);
 
-int hello(void *ctx){
+int hello(struct pt_regs *ctx){
     u64 uid;
     u64 counter = 0;
     u64 *p;
@@ -22,8 +22,10 @@ int hello(void *ctx){
 """
 
 b = BPF(text=program)
-syscall = b.get_syscall_fnname("execve")
-b.attach_kprobe(event=syscall, fn_name="hello")
+openat_fn = b.get_syscall_fnname("openat")
+write_fn = b.get_syscall_fnname("write")
+b.attach_kprobe(event=openat_fn, fn_name="hello")
+b.attach_kprobe(event=write_fn, fn_name="hello")
 
 while True:
     time.sleep(2)
