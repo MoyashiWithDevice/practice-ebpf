@@ -20,9 +20,9 @@ int hello(void *ctx){
     data.uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
 
     if (data.pid%2 == 0){
-        message = "Hello World!! Gu-su-";
+        __builtin_memcpy(message, "Hello World!! Gu-su-", 20);
     }else{
-        message = "Hello World!! Gu-su++";
+        __builtin_memcpy(message, "Hello World!! Gu-su+", 20);
     }
 
     bpf_get_current_comm(&data.command, sizeof(data.command));
