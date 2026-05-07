@@ -19,9 +19,9 @@ int hello(void *ctx){
     data.uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
 
     if (data.pid%2 == 0){
-        char message[12] = "Hello World!! Gu-su-";
+        char message[19] = "Hello World!! Gu-su-";
     }else{
-        char message[12] = "Hello World!! Gu-su++";
+        char message[19] = "Hello World!! Gu-su++";
     }
 
     bpf_get_current_comm(&data.command, sizeof(data.command));
