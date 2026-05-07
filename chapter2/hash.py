@@ -29,5 +29,5 @@ while True:
     time.sleep(2)
     s=""
     for k,v in b["counter_table"].items():
-        s += "ID {k.value}: {v.value}\t"
+        s += f"ID {k.value}: {v.value}\t"
         print(s)
