@@ -3,9 +3,9 @@ from bcc import BPF
 import time
 
 program = r"""
-BPF_PROG_ARRAY(syscall, 300);
+BPF_HASH(syscall);
 
-int hello(struct bpf_raw_tracepoint_args *ctx){
+int HASHs *ctx){
     u64 uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
     u64 counter = 0;
     u64 *p;
