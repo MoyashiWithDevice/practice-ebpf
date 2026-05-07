@@ -14,14 +14,15 @@ struct data_t{
 
 int hello(void *ctx){
     struct data_t data = {};
+    char message[20];
     
     data.pid = bpf_get_current_pid_tgid() >> 32;
     data.uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
 
     if (data.pid%2 == 0){
-        char message[19] = "Hello World!! Gu-su-";
+        message = "Hello World!! Gu-su-";
     }else{
-        char message[19] = "Hello World!! Gu-su++";
+        message = "Hello World!! Gu-su++";
     }
 
     bpf_get_current_comm(&data.command, sizeof(data.command));
