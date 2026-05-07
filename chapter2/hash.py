@@ -5,7 +5,7 @@ import time
 program = r"""
 BPF_HASH(counter_table);
 
-int hello(struct pt_regs *ctx){
+int hello_openat(struct pt_regs *ctx){
     u64 uid;
     u64 counter = 0;
     u64 *p;
@@ -19,13 +19,29 @@ int hello(struct pt_regs *ctx){
     counter_table.update(&uid, &counter);
     return 0;
 }
+
+int hello_write(struct pt_regs *ctx){
+    u64 uid;
+    u64 counter = 0;
+    u64 *p;
+
+    uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
+    p = counter_table.lookup(&uid);
+    if (p != 0){
+        counter = *p;
+    }
+    counter+=100;
+    counter_table.update(&uid, &counter);
+    return 0;
+}
 """
 
 b = BPF(text=program)
 openat_fn = b.get_syscall_fnname("openat")
 write_fn = b.get_syscall_fnname("write")
-b.attach_kprobe(event=openat_fn, fn_name="hello")
-b.attach_kprobe(event=write_fn, fn_name="hello")
+
+b.attach_kprobe(event=openat_fn, fn_name="hello_openat")
+b.attach_kprobe(event=write_fn, fn_name="hello_write")
 
 while True:
     time.sleep(2)
