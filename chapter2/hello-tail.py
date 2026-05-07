@@ -5,7 +5,7 @@ import time
 program = r"""
 BPF_HASH(syscall);
 
-RAW_TRACEPOINT_PROBE("sys_enter"){
+RAW_TRACEPOINT_PROBE(sys_enter){
     u64 uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
     u64 counter = 0;
     u64 *p;
