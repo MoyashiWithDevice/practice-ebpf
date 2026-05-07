@@ -46,6 +46,7 @@ prog_array[ct.c_int(224)] = ct.c_int(timer_fn.fd)
 prog_array[ct.c_int(225)] = ct.c_int(timer_fn.fd)
 prog_array[ct.c_int(226)] = ct.c_int(timer_fn.fd)
 
+prog_array[ct.c_int(1)] = ct.c_int(ignore_fn.fd)
 prog_array[ct.c_int(21)] = ct.c_int(ignore_fn.fd)
 prog_array[ct.c_int(22)] = ct.c_int(ignore_fn.fd)
 prog_array[ct.c_int(25)] = ct.c_int(ignore_fn.fd)
