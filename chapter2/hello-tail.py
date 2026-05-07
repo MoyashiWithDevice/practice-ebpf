@@ -5,7 +5,7 @@ import time
 program = r"""
 BPF_HASH(syscall);
 
-int HASHs *ctx){
+int hello(struct bpf_raw_tracepoint_args *ctx){
     u64 uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;
     u64 counter = 0;
     u64 *p;
