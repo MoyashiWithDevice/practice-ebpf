@@ -10,7 +10,7 @@ struct user_msg_t {
 
 BPF_HASH(config, u32, struct user_msg_t);
 
-BPF_RINGBUF_OUTPUT(output); 
+BPF_RINGBUF_OUTPUT(output, 1); 
 
 struct data_t {     
    int pid;
