@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <bpf/bpf.h>
 #include <bpf/libbpf.h>
 #include "hello-buffer-config.h"
 #include "hello-buffer-config.skel.h"
+
+struct user_msg_t {
+	char message[64];
+};
 
 static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va_list args)
 {
@@ -49,7 +54,7 @@ int main()
 	__u32 uid = 1000; //userID
 	struct user_msg_t user_message_1000 = {"User 1000!"};
 
-	int fd = bpf_map__fd{skel->maps.my_config};
+	int fd = bpf_map__fd(skel->maps.my_config);
 	if(bpf_map_update_elem(fd, &uid, &user_message_1000, BPF_ANY) != 0){
 		fprintf(stderr, "failed to update BPF map for user 1000: %s\n", strerror(errno));
 		hello_buffer_config_bpf__destroy(skel);
