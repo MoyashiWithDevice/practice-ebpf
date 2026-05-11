@@ -46,6 +46,16 @@ int main()
         return 1;
 	}
 
+	__u32 uid = 1000; //userID
+	struct user_msg_t user_message_1000 = {"User 1000!"};
+
+	int fd = bpf_map__fd{skel->maps.my_config};
+	if(bpf_map_update_elem(fd, &uid, &user_message_1000, BPF_ANY) != 0){
+		fprintf(stderr, "failed to update BPF map for user 1000: %s\n", strerror(errno));
+		hello_buffer_config_bpf__destroy(skel);
+		return 1;
+	}
+
 	pb = perf_buffer__new(bpf_map__fd(skel->maps.output), 8, handle_event, lost_event, NULL, NULL);
 	if (!pb) {
 		err = -1;
